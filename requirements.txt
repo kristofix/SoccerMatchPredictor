@@ -9,7 +9,7 @@ totalcorner==0.1.2
 ramda
 pyspark
 pytest
-# tensorflow
+#tensorflow
 wandb
 gunicorn
 sweetviz
