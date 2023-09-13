@@ -1,10 +1,13 @@
-
+import pandas as pd
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, dif_threshold
 def removeDotFromColumnNames(df):
-    df.columns = df.columns.str.replace('.', '')
+    #df.columns = df.columns.str.replace('.', '')
+    df.columns = df.columns.str.replace('.', '', regex=False)
+
     return df
 
 def dropMinutes(df):
-    df = df[(df['framestime'] > min) & (df['framestime'] < max)]
+    df = df[(df['framestime'] > min_time) & (df['framestime'] < max_time)]
     df.drop(['framestime'], axis=1, inplace=True)
     return df
 
@@ -12,7 +15,6 @@ def sortByDate(df):
     df['datetimestamp'] = pd.to_datetime(df['datetimestamp'], unit='ms')
     df = df.sort_values(by='datetimestamp')
     return df
-
 
 def dropNotDraw(df):
   #drop mathces without draw in betting frame

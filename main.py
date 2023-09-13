@@ -11,26 +11,29 @@ from ramda import pipe
 from functools import partial
 import numpy as np
 
-min = 5
-max = 7
-minbetodd = 1.9
-maxbetodd = 3.5
-insufficient = 20
-dif_threshold = 1
 
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, dif_threshold
 from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_thresholdd
 
 df = pd.read_csv('/home/kk/PycharmProjects/oddmaker/data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
 df.dropna(inplace=True)
-print(df.head(5))
 print(df.shape)
 
 
 pipeline = pipe(
     removeDotFromColumnNames,
     dropMinutes,
+    sortByDate,
+    dropNotDraw,
+    oddsFilter,
+    addSumStats,
+    dropInsufficient,
+    dif_thresholdd
 )
 
 # Apply pipeline
 df = pipeline(df)
 print(df.shape)
+#print(df.head(10))
+
+
