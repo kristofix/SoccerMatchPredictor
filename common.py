@@ -39,7 +39,7 @@ def dropInsufficient(df):
   df = df[(df['sumAstats'] >= insufficient) | (df['sumBstats'] >= insufficient)]
   return df
 
-def dif_thresholdd(df):
+def dif_threshold(df):
   # Calculate the difference between the values in columns 'sumAstats' and 'sumBstats'
   df['diff'] = abs(df['sumAstats'] - df['sumBstats'])
   # Delete rows where the difference is less than dif_threshold
