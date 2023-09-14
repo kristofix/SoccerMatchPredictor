@@ -16,3 +16,4 @@ sweetviz
 pandas_profiling
 seaborn
 xgboost
+scikit-optimize #BayesSearchCV

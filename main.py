@@ -10,8 +10,10 @@ import pandas as pd
 from ramda import pipe
 from functools import partial
 import numpy as np
-
-
+import wandb
+from wandb.keras import WandbCallback
+from wandb.xgboost import WandbCallback
+#wandb login
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, dif_threshold
 from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_thresholdd
 
