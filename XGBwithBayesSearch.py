@@ -27,22 +27,7 @@ def xgb_model(X_train, X_test, y_train, y_test):
 
     opt.fit(X_train, y_train)
 
-    from sklearn.metrics import accuracy_score
-
-    # Make predictions on the test set
-    y_pred = loaded_model.predict(X_test)
-
-    # Calculate and print accuracy
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f"Test Accuracy: {accuracy}")
-
     import json
-
     # Save to file
     with open("best_params.json", "w") as f:
         json.dump(opt.best_params_, f)
-    #
-    #
-    # # Load from file
-    # with open("best_params.json", "r") as f:
-    #     loaded_params = json.load(f)
