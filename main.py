@@ -10,7 +10,7 @@ import wandb
 from wandb.keras import WandbCallback
 from wandb.xgboost import WandbCallback
 #wandb login
-from config import min_time, max_time, minbetodd, maxbetodd, insufficient, dif_threshold
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold
 from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_threshold
 from XGBwithBayesSearch import xgb_model
 
@@ -27,7 +27,7 @@ pipeline = pipe(
     oddsFilter,
     addSumStats,
     dropInsufficient,
-    dif_thresholdd
+    dif_threshold
 )
 
 # Apply pipeline

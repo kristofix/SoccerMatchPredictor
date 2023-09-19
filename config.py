@@ -3,6 +3,6 @@ max_time = 21
 minbetodd = 1.9
 maxbetodd = 3.5
 insufficient = 20
-dif_threshold = 1
+threshold = 1
 n_iter = 3 #BayesSearch
 cv = 5 #BayesSearch

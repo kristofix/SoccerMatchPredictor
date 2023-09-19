@@ -1,7 +1,6 @@
 import pandas as pd
-from config import min_time, max_time, minbetodd, maxbetodd, insufficient, dif_threshold
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold
 def removeDotFromColumnNames(df):
-    #df.columns = df.columns.str.replace('.', '')
     df.columns = df.columns.str.replace('.', '', regex=False)
 
     return df
@@ -26,6 +25,7 @@ def dropNotDraw(df):
   return df
 
 def oddsFilter(df):
+
   df = df[(df['frameshomeodd'] >= minbetodd) & (df['frameshomeodd'] <= maxbetodd) & (df['framesawayodd'] >= minbetodd) & (df['framesawayodd'] <= maxbetodd)]
   return df
 
@@ -43,7 +43,7 @@ def dif_threshold(df):
   # Calculate the difference between the values in columns 'sumAstats' and 'sumBstats'
   df['diff'] = abs(df['sumAstats'] - df['sumBstats'])
   # Delete rows where the difference is less than dif_threshold
-  df = df[df['diff'] >= dif_threshold]
+  df = df[df['diff'] >= threshold]
   # Drop the 'diff' column, as it is no longer needed
   df = df.drop(columns='diff')
   return df
