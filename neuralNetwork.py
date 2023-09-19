@@ -1,9 +1,9 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-import numpy as np
+from tensorflow.keras.callbacks import EarlyStopping
 import matplotlib
+
+import numpy as np
 matplotlib.use('TkAgg')  # Or use another backend that you have, like 'Qt5Agg'
 
 
@@ -15,20 +15,14 @@ def nn_model(X_train, X_test, y_train, y_test):
     model.add(Dense(8, activation='relu'))
     model.add(Dense(3, activation='softmax'))
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    # Early stopping
+    early_stop = EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=20, verbose=1, mode='min')
 
-    model.fit(X_train, y_train, epochs=50, batch_size=32)
+    # Fit the model
+    model.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, callbacks=[early_stop])
 
-    loss, accuracy = model.evaluate(X_test, y_test)
-    print(f"Test Loss: {loss}")
-    print(f"Test Accuracy: {accuracy}")
 
-    from sklearn.metrics import accuracy_score
 
-    # Make predictions on the test set
-    y_pred = model.predict(X_test)
-
-    # Calculate and print accuracy
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f"Test Accuracy: {accuracy}")
-
+    # Save the model
+    model.save('my_model.h5')
