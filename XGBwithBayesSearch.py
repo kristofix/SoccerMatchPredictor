@@ -39,7 +39,7 @@ def xgb_model(X_train, X_test, y_train, y_test):
     # Plot feature importance
     best_model = opt.best_estimator_
     xgb.plot_importance(best_model)
-    plt.show()
+    plt.show(block=False)
 
     best_model = opt.best_estimator_
     importances = best_model.feature_importances_
