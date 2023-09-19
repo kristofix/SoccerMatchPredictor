@@ -1,6 +1,10 @@
 import xgboost as xgb
 from skopt import BayesSearchCV
 from config import n_iter, cv
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
+
 def xgb_model(X_train, X_test, y_train, y_test):
     xgb_model = xgb.XGBClassifier()
 
@@ -31,3 +35,16 @@ def xgb_model(X_train, X_test, y_train, y_test):
     # Save to file
     with open("best_params.json", "w") as f:
         json.dump(opt.best_params_, f)
+
+    # Plot feature importance
+    best_model = opt.best_estimator_
+    xgb.plot_importance(best_model)
+    plt.show()
+
+    best_model = opt.best_estimator_
+    importances = best_model.feature_importances_
+    feature_names = X_train.columns  # Assuming X_train is a DataFrame
+
+    for feature_name, importance in zip(feature_names, importances):
+        print(f"Feature {feature_name} : Importance {importance}")
+

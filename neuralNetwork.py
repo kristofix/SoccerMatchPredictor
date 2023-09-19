@@ -3,6 +3,9 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')  # Or use another backend that you have, like 'Qt5Agg'
+
 
 def nn_model(X_train, X_test, y_train, y_test):
     n_features = X_train.shape[1]  # Get the number of features from the training data
