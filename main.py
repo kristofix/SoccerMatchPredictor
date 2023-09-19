@@ -6,7 +6,7 @@ import pandas as pd
 from ramda import pipe
 import json
 import matplotlib
-matplotlib.use('TkAgg')  # Or use another backend that you have, like 'Qt5Agg'
+matplotlib.use('TkAgg')
 
 import wandb
 from wandb.keras import WandbCallback
@@ -55,14 +55,21 @@ loaded_model = xgb.XGBClassifier(**loaded_params)
 # Fit the model
 loaded_model.fit(X_train, y_train)
 
-from sklearn.metrics import accuracy_score
 
 # Make predictions on the test set
 y_pred = loaded_model.predict(X_test)
 
-# Calculate and print accuracy
+
 accuracy = accuracy_score(y_test, y_pred)
-print(f"Test Accuracy: {accuracy}")
+print("Accuracy:", accuracy)
+precision = precision_score(y_test, y_pred, average='weighted')
+print("precision:", precision)
+recall = recall_score(y_test, y_pred, average='weighted')
+print("Recall:", recall)
+f1 = f1_score(y_test, y_pred, average='weighted')
+print("F1 Score:", f1)
+
+
 
 # Calculate the confusion matrix
 cm = confusion_matrix(y_test, y_pred)
@@ -70,15 +77,15 @@ print("Confusion Matrix:\n", cm)
 #nn_model(X_train, X_test, y_train, y_test)
 
 # Calculate the confusion matrix for holdout
-cm1 = confusion_matrix(y_test, y_pred)
-yieldd_holdout = int((cm1[1][1] + cm1[2][2] - cm1[0][1] - cm1[0][2] - cm1[1][2] - cm1[2][1])) / int(
-    (cm1[1][1] + cm1[2][2] + cm1[0][1] + cm1[0][2] + cm1[1][2] + cm1[2][1]))  #
-total_bets_holdout = cm1[1][1] + cm1[2][2] + cm1[0][1] + cm1[0][2] + cm1[1][2] + cm1[2][1]  #
-income_holdout = cm1[1][1] + cm1[2][2] - cm1[0][1] - cm1[0][2] - cm1[1][2] - cm1[2][1]  #
+cm = confusion_matrix(y_test, y_pred)
+yield1 = int((cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1])) / int(
+    (cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]))  #
+total_bets = cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]  #
+income = cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1]  #
 # Results on holdout
-print('Test income: ', income_holdout)
-print('Test total placed bet: ', total_bets_holdout)
-print('Test yield: ', yieldd_holdout)
+print('Test income: ', income)
+print('Test total placed bet: ', total_bets)
+print('Test yield: ', yield1)
 
 # new wandb funct
 from wandb import Image
@@ -96,3 +103,6 @@ plt.ylabel('True')
 #wandb.log({'confusion_matrix': Image(fig)})
 plt.show()
 
+# to do:
+# add result to dict
+# add result to set
