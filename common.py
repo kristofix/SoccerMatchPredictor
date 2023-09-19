@@ -29,10 +29,16 @@ def oddsFilter(df):
   df = df[(df['frameshomeodd'] >= minbetodd) & (df['frameshomeodd'] <= maxbetodd) & (df['framesawayodd'] >= minbetodd) & (df['framesawayodd'] <= maxbetodd)]
   return df
 
+
 def addSumStats(df):
-  df['sumAstats'] = df['frameshomeshotsOnTarget'] + df['frameshomeshotsOffTarget']+ df['frameshomeattacks']+ df['frameshomedangerousAttacks']
-  df['sumBstats'] = df['framesawayshotsOnTarget'] + df['framesawayshotsOffTarget']+ df['framesawayattacks']+ df['framesawaydangerousAttacks']
-  return df
+    # Compute new columns and hold them temporarily
+    sumAstats = df['frameshomeshotsOnTarget'] + df['frameshomeshotsOffTarget'] + df['frameshomeattacks'] + df['frameshomedangerousAttacks']
+    sumBstats = df['framesawayshotsOnTarget'] + df['framesawayshotsOffTarget'] + df['framesawayattacks'] + df['framesawaydangerousAttacks']
+    # Insert new columns before the last column
+    df.insert(loc=len(df.columns) - 1, column='sumAstats', value=sumAstats)
+    df.insert(loc=len(df.columns) - 1, column='sumBstats', value=sumBstats)
+    return df
+
 
 def dropInsufficient(df):
   #drop records with insufficient value of summary data

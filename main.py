@@ -8,6 +8,9 @@ import numpy as np
 import json
 import matplotlib
 import xgboost as xgb
+import time
+
+start_time = time.time() # to compare running time with and without normalization
 
 matplotlib.use('TkAgg')
 
@@ -15,7 +18,7 @@ import wandb
 from wandb.keras import WandbCallback
 from wandb.xgboost import WandbCallback
 #wandb login
-from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_threshold
+from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
 from XGBwithBayesSearch import xgb_model
 from neuralNetwork import nn_model
 
@@ -39,15 +42,14 @@ pipeline = pipe(
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
 print(df.shape)
-df = df.iloc[:len(df)//100]      #uncomment for quick test run
+#df = df.iloc[:len(df)//100]      #uncomment for quick test run
 print(df.shape)
-df.to_csv('your_file_name.csv', index=False)
 df.to_csv('your_file_name1.csv', index=False)
 
 #Normalize data because data do not follow GaussianDistribution - checked in other file
-from sklearn.preprocessing import MinMaxScaler
-scaler = MinMaxScaler()
-df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+# from sklearn.preprocessing import MinMaxScaler
+# scaler = MinMaxScaler()
+# df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
 print(df.head(5))
 df.to_csv('your_file_name2.csv', index=False)
 
@@ -107,3 +109,7 @@ plt.show()
 # to do:
 # add result to dict
 # add result to set
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f"Function took {elapsed_time} seconds to run.") #78,43 with, 63 without
