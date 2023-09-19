@@ -41,7 +41,7 @@ plt.show()
 #Shapiro-Wilk test
 for col in df.columns[:-1]:  # Assuming last column is target
     _, p_value = stats.shapiro(df[col])
-    if p_value > 0.1:
+    if p_value > 0.05:
         print(f"{col} likely follows a Gaussian distribution.")
     else:
          print(f"{col} does not follow a Gaussian distribution.")

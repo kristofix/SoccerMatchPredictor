@@ -50,6 +50,7 @@ df.to_csv('your_file_name1.csv', index=False)
 # from sklearn.preprocessing import MinMaxScaler
 # scaler = MinMaxScaler()
 # df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+
 print(df.head(5))
 df.to_csv('your_file_name2.csv', index=False)
 
@@ -60,7 +61,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 #XGB - 1
 #neural network - 2
 #se selector to choose model
-model_selector = 2
+model_selector = 1
 if model_selector == 1:
     xgb_model(X_train, X_test, y_train, y_test)
     #Load params from xgb training
