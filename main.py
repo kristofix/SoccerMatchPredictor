@@ -11,12 +11,14 @@ import xgboost as xgb
 import time
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
 import wandb
-from wandb.keras import WandbCallback
-from wandb.xgboost import WandbCallback
+from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
+from XGBwithBayesSearch import xgb_model
+from neuralNetwork import nn_model
 
 wandb.init(
     project="09-23 xgb and nn",
-    notes="no regularization",
+    #notes="SMOTE, 3 layers only, no regularization",
+    notes="xgb drop sumstats",
     tags=["xgb","nn"]
 )
 
@@ -24,16 +26,9 @@ start_time = time.time() # to compare running time with and without normalizatio
 
 matplotlib.use('TkAgg')
 
-
-#wandb login
-from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
-from XGBwithBayesSearch import xgb_model
-from neuralNetwork import nn_model
-
 df = pd.read_csv('/home/kk/PycharmProjects/oddmaker/data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
 df.dropna(inplace=True)
 print(df.shape)
-
 
 pipeline = pipe(
     removeDotFromColumnNames,
@@ -49,6 +44,8 @@ pipeline = pipe(
 # Apply pipeline
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
+df.drop(['sumAstats'], axis=1, inplace=True)
+df.drop(['sumBstats'], axis=1, inplace=True)
 print(df.shape)
 #df = df.iloc[:len(df)//100]      #uncomment for quick test run <-----------------------------------------------
 print(df.shape)
@@ -70,7 +67,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 1
+model_selector = 2
 
 if model_selector == 2:
     xgb_model(X_train, X_test, y_train, y_test)

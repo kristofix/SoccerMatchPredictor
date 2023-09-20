@@ -3,18 +3,24 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
 import matplotlib
 import matplotlib.pyplot as plt
-from tensorflow.keras import regularizers
+#from tensorflow.keras import regularizers
 from wandb.keras import WandbCallback
 import wandb
+from imblearn.over_sampling import SMOTE
 matplotlib.use('TkAgg')
+
 def nn_model(X_train, X_test, y_train, y_test):
     n_features = X_train.shape[1]  # Get the number of features from the training data
 
+    # SMOTE
+    sm = SMOTE(random_state=42)
+    X_train, y_train = sm.fit_resample(X_train, y_train)
+
     model = Sequential()
     model.add(Dense(n_features, input_dim=n_features, activation='relu'))
+    model.add(Dense(30, activation='relu'))
+    model.add(Dense(15, activation='relu'))
     model.add(Dense(8, activation='relu'))
-    model.add(Dense(16, activation='relu'))
-    model.add(Dense(8, activation='relu', ))
     model.add(Dense(3, activation='softmax'))
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

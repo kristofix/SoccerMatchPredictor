@@ -4,5 +4,5 @@ minbetodd = 1.9
 maxbetodd = 3.5
 insufficient = 20
 threshold = 1
-n_iter = 5 #BayesSearch
-cv = 4 #BayesSearch
+n_iter = 3 #BayesSearch
+cv = 2 #BayesSearch

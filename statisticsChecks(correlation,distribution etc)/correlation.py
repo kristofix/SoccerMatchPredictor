@@ -26,7 +26,7 @@ pipeline = pipe(
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
 print(df.shape)
-df = df.iloc[:len(df)//100]      #uncomment for quick test run
+# df = df.iloc[:len(df)//100]      #uncomment for quick test run
 print(df.shape)
 
 correlation_matrix = df.corr()
