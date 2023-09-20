@@ -2,8 +2,7 @@
 data/*
 venv/*
 wandb/*
-wandb
 venv
 *.csv
-/wandb/
+
 
