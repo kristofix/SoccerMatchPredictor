@@ -3,6 +3,7 @@ from skopt import BayesSearchCV
 from config import n_iter, cv
 import matplotlib.pyplot as plt
 import matplotlib
+import json
 matplotlib.use('TkAgg')
 
 def xgb_model(X_train, X_test, y_train, y_test):
@@ -31,8 +32,6 @@ def xgb_model(X_train, X_test, y_train, y_test):
 
     opt.fit(X_train, y_train)
 
-    import json
-    # Save to file
     with open("best_params.json", "w") as f:
         json.dump(opt.best_params_, f)
 
@@ -43,7 +42,7 @@ def xgb_model(X_train, X_test, y_train, y_test):
 
     best_model = opt.best_estimator_
     importances = best_model.feature_importances_
-    feature_names = X_train.columns  # Assuming X_train is a DataFrame
+    feature_names = X_train.columns
 
     for feature_name, importance in zip(feature_names, importances):
         print(f"Feature {feature_name} : Importance {importance}")

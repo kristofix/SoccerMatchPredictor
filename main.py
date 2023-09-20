@@ -9,14 +9,22 @@ import json
 import matplotlib
 import xgboost as xgb
 import time
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
+import wandb
+from wandb.keras import WandbCallback
+from wandb.xgboost import WandbCallback
+
+wandb.init(
+    project="09-23 xgb and nn",
+    notes="no regularization",
+    tags=["xgb","nn"]
+)
 
 start_time = time.time() # to compare running time with and without normalization
 
 matplotlib.use('TkAgg')
 
-import wandb
-from wandb.keras import WandbCallback
-from wandb.xgboost import WandbCallback
+
 #wandb login
 from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
 from XGBwithBayesSearch import xgb_model
@@ -42,7 +50,7 @@ pipeline = pipe(
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
 print(df.shape)
-#df = df.iloc[:len(df)//100]      #uncomment for quick test run
+#df = df.iloc[:len(df)//100]      #uncomment for quick test run <-----------------------------------------------
 print(df.shape)
 df.to_csv('your_file_name1.csv', index=False)
 
@@ -57,21 +65,23 @@ df.to_csv('your_file_name2.csv', index=False)
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 
 
-#SELECT YOUR MODEL
-#XGB - 1
-#neural network - 2
-#se selector to choose model
-model_selector = 2
+# SELECT YOUR MODEL <-----------------------------------------------------------
+# neural network - 1
+# XGB - 2
+# Use selector to choose model
+
+model_selector = 1
+
 if model_selector == 2:
     xgb_model(X_train, X_test, y_train, y_test)
     #Load params from xgb training
     with open("best_params.json", "r") as f:
        loaded_params = json.load(f)
-    #Initialize model with loaded parameters
+
     loaded_model = xgb.XGBClassifier(**loaded_params)
     loaded_model.fit(X_train, y_train)
     y_pred = loaded_model.predict(X_test)
-elif model_selector == 2:
+elif model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
     from tensorflow.keras.models import load_model
     loaded_model = load_model('my_model.h5')
@@ -88,7 +98,6 @@ print("Recall:", recall)
 f1 = f1_score(y_test, y_pred, average='weighted')
 print("F1 Score:", f1)
 
-# Calculate the confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", cm)
 
@@ -104,7 +113,7 @@ fig, ax = plt.subplots()
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
 plt.xlabel('Predicted')
 plt.ylabel('True')
-#wandb.log({'confusion_matrix': Image(fig)})
+# wandb.log({'confusion_matrix': Image(fig)})
 plt.show(block=False)
 
 # to do:
@@ -113,6 +122,25 @@ plt.show(block=False)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
-print(f"Function took {elapsed_time} seconds to run.") #78,43 with, 63 without
+print(f"Function took {elapsed_time} seconds to run.") #78,43 with normalization and 63 without for small dataset - strange - need to check in future.
 
 plt.show()
+
+wandb.log({
+    'Total bets placed': total_bets,
+    'income': income,
+    'yield': yield1,
+    'Minute': min_time + 1,
+    'Min odd:': minbetodd,
+    'Max odd:': maxbetodd,
+    'accuracy': accuracy,
+    'precision': precision,
+    'recall': recall,
+    'f1_score': f1,
+    'odds_interval': (minbetodd, maxbetodd),
+    'n_iter': n_iter,
+    'dif': dif_threshold,
+    'insufficient': insufficient,
+})
+
+wandb.finish()
