@@ -23,38 +23,29 @@ pipeline = pipe(
 
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
-print(df.shape)
-df = df.iloc[:len(df)//100]      #uncomment for quick test run
-print(df.shape)
 
-#Histogram plots
-fig, axes = plt.subplots(3, 5, figsize=(15, 10))  # Adjust grid size (3 rows, 5 columns)
-axes = axes.ravel()
-for i, col in enumerate(df.columns[:-1]):  # Assuming last column is the target
-    axes[i].hist(df[col], bins=20, color='blue', alpha=0.7)
-    axes[i].set_title(col)
-plt.tight_layout()
-plt.show(block = False)
-
+#Stratified sampling ensures that each class is represented proportionally. Need to use it because shapiro-wilk can't handle big dataset
+from sklearn.model_selection import train_test_split
+_, sample_df = train_test_split(df, test_size=0.01, stratify=df['zzz_play'])
 
 #Shapiro-Wilk test
-for col in df.columns[:-1]:
-    _, p_value = stats.shapiro(df[col])
+for col in sample_df.columns[:-1]:
+    _, p_value = stats.shapiro(sample_df[col])
     print(p_value)
     if p_value > 0.05:
         print(f"{col} likely follows a Gaussian distribution!!!!!!!")
     else:
          print(f"{col} does not follow a Gaussian distribution.")
 
-# Shapiro-Wilk test and Q-Q plots
-fig2, axes2 = plt.subplots(3, 5, figsize=(15, 10))  # Adjust grid size (3 rows, 5 columns)
-axes2 = axes2.ravel()
-for i, col in enumerate(df.columns[:-1]):  # Assuming last column is the target
-    stats.probplot(df[col], plot=axes2[i])
-    axes2[i].set_title(f'Q-Q plot for {col}')
-
-plt.tight_layout()
+#Take a look on each column histogram
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+for col in sample_df.columns[:-1]:
+    sample_df[col].plot(kind='hist', bins=20, alpha=0.5, label=col, ax=ax)
+ax.legend()
 plt.show()
+
+
 
 
 

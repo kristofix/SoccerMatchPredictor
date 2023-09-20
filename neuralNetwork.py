@@ -6,31 +6,23 @@ import matplotlib.pyplot as plt
 #from tensorflow.keras import regularizers
 from wandb.keras import WandbCallback
 import wandb
-from imblearn.over_sampling import SMOTE
+#from imblearn.over_sampling import SMOTE
 matplotlib.use('TkAgg')
 
 def nn_model(X_train, X_test, y_train, y_test):
     n_features = X_train.shape[1]  # Get the number of features from the training data
 
-    # SMOTE
-    sm = SMOTE(random_state=42)
-    X_train, y_train = sm.fit_resample(X_train, y_train)
-
     model = Sequential()
     model.add(Dense(n_features, input_dim=n_features, activation='relu'))
-    model.add(Dense(30, activation='relu'))
     model.add(Dense(15, activation='relu'))
     model.add(Dense(8, activation='relu'))
     model.add(Dense(3, activation='softmax'))
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=40, verbose=1, mode='min')
+    history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
 
-    history = model.fit(X_train, y_train, epochs=120, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
-
-    model.save('my_model.keras')
-
+    model.save('nn_model.keras')
 
     # Plotting on one image using subplots
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
@@ -52,7 +44,6 @@ def nn_model(X_train, X_test, y_train, y_test):
     axs[1].legend(['Train', 'Validation'], loc='upper left')
 
     plt.show(block=False)
-    fig.savefig("training_metrics.png")
     wandb.log({"Training Metrics": [wandb.Image(fig)]})
 
 
