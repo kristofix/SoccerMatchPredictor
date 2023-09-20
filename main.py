@@ -9,16 +9,16 @@ import json
 import matplotlib
 import xgboost as xgb
 import time
-from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
 import wandb
-from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
 from XGBwithBayesSearch import xgb_model
 from neuralNetwork import nn_model
+from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
+from common import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
 
 wandb.init(
     project="09-23 xgb and nn",
     #notes="SMOTE, 3 layers only, no regularization",
-    notes="xgb drop sumstats",
+    notes="xgb drop sumstats,frameshomeodd",
     tags=["xgb","nn"]
 )
 
@@ -41,13 +41,12 @@ pipeline = pipe(
     dif_threshold
 )
 
-# Apply pipeline
 df = pipeline(df)
-df.drop(['datetimestamp'], axis=1, inplace=True)
-df.drop(['sumAstats'], axis=1, inplace=True)
-df.drop(['sumBstats'], axis=1, inplace=True)
+
+df.drop(['datetimestamp', 'sumAstats', 'sumBstats', 'frameshomeodd'], axis=1, inplace=True) #mainly because of high correlation
+
 print(df.shape)
-#df = df.iloc[:len(df)//100]      #uncomment for quick test run <-----------------------------------------------
+#df = df.iloc[:len(df)//1000]      #uncomment for quick test run <-----------------------------------------------
 print(df.shape)
 df.to_csv('your_file_name1.csv', index=False)
 
@@ -74,15 +73,12 @@ if model_selector == 2:
     #Load params from xgb training
     with open("best_params.json", "r") as f:
        loaded_params = json.load(f)
-
     loaded_model = xgb.XGBClassifier(**loaded_params)
-    loaded_model.fit(X_train, y_train)
     y_pred = loaded_model.predict(X_test)
 elif model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
     from tensorflow.keras.models import load_model
     loaded_model = load_model('my_model.h5')
-    loaded_model.fit(X_train, y_train)
     y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)  # because result is probabilities
 
 

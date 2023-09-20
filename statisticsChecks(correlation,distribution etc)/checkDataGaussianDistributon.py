@@ -21,7 +21,6 @@ pipeline = pipe(
     dif_threshold
 )
 
-# Apply pipeline
 df = pipeline(df)
 df.drop(['datetimestamp'], axis=1, inplace=True)
 print(df.shape)
