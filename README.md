@@ -9,7 +9,7 @@ Usage
 To run the main script, execute:
 python main.py
 
-Project is still in development. Next step will be:
+Project is still in development. Next steps will be:
 
 -add custom loss function
 
