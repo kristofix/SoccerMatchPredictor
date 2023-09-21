@@ -6,4 +6,4 @@ insufficient = 20
 threshold = 1
 n_iter = 1 #BayesSearch
 cv = 2 #BayesSearch
-epochs = 100 # for neuralnetwor
+epochs = 100 # for neuralnetwork

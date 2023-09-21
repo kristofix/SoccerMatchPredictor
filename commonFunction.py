@@ -1,5 +1,6 @@
 import pandas as pd
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold
+
 def removeDotFromColumnNames(df):
     df.columns = df.columns.str.replace('.', '', regex=False)
     return df
@@ -23,7 +24,6 @@ def oddsFilter(df):
   df = df[(df['frameshomeodd'] >= minbetodd) & (df['frameshomeodd'] <= maxbetodd) & (df['framesawayodd'] >= minbetodd) & (df['framesawayodd'] <= maxbetodd)]
   return df
 
-
 def addSumStats(df):
     # Compute new columns and hold them temporarily
     sumAstats = df['frameshomeshotsOnTarget'] + df['frameshomeshotsOffTarget'] + df['frameshomeattacks'] + df['frameshomedangerousAttacks']
@@ -32,7 +32,6 @@ def addSumStats(df):
     df.insert(loc=len(df.columns) - 1, column='sumAstats', value=sumAstats)
     df.insert(loc=len(df.columns) - 1, column='sumBstats', value=sumBstats)
     return df
-
 
 def dropInsufficient(df):
   df = df[(df['sumAstats'] >= insufficient) | (df['sumBstats'] >= insufficient)]
@@ -45,5 +44,6 @@ def dif_threshold(df):
   return df
 
 def dropUnnecessary(df):
-    df.drop(['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'sumAstats', 'sumBstats', 'datetimestamp'], axis=1, inplace=True)
+    cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'sumAstats', 'sumBstats', 'datetimestamp']
+    df.drop(columns=[col for col in cols_to_drop if col in df.columns], inplace=True)
     return df
