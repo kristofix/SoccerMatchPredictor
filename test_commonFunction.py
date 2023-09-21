@@ -28,12 +28,15 @@ class TestPandasFunctions(unittest.TestCase):
     def test_removeDotFromColumnNames(self):
         result = removeDotFromColumnNames(self.df)
         self.assertIn("nameWithDot", result.columns)
+
     def test_dropMinutes(self):
         result = dropMinutes(self.df)
         self.assertEqual(len(result), 1)
+
     def test_sortByDate(self):
         sorted_df = sortByDate(self.df)
         self.assertTrue((sorted_df['datetimestamp'].is_monotonic_increasing))
+
     def test_oddsFilter(self):
         result = oddsFilter(self.df)
         self.assertNotIn(1.1, result['frameshomeodd'].values)
@@ -43,7 +46,6 @@ class TestPandasFunctions(unittest.TestCase):
         result = dropUnnecessary(self.df)
         for col in ['framestime', 'frameshomescore', 'framesawayscore', 'datetimestamp']:
             self.assertNotIn(col, result.columns)
-
 
 if __name__ == '__main__':
     unittest.main()
