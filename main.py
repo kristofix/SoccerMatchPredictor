@@ -13,7 +13,7 @@ import wandb
 from XGBwithBayesSearch import xgb_model
 from neuralNetwork import nn_model
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
-from commonFunction import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient
+from commonFunction import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
 
 wandb.init(
     project="09-23 xgb and nn",
@@ -37,11 +37,10 @@ pipeline = pipe(
     oddsFilter,
     addSumStats,
     dropInsufficient,
-    dif_threshold
+    dif_threshold,
+    dropUnnecessary
 )
 df = pipeline(df)
-
-df.drop(['datetimestamp'], axis=1, inplace=True)
 
 #df = df.iloc[:len(df)//1000]      #uncomment for quick test run <-----------------------------------------------
 
@@ -58,7 +57,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 2
+model_selector = 1
 
 if model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)

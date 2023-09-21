@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #from tensorflow.keras import regularizers
 from wandb.keras import WandbCallback
 import wandb
-#from imblearn.over_sampling import SMOTE
+from config import epochs
 matplotlib.use('TkAgg')
 
 def nn_model(X_train, X_test, y_train, y_test):
@@ -20,7 +20,7 @@ def nn_model(X_train, X_test, y_train, y_test):
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=40, verbose=1, mode='min')
-    history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
+    history = model.fit(X_train, y_train, epochs=epochs, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
 
     model.save('nn_model.keras')
 

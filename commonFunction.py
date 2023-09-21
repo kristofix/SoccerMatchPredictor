@@ -6,7 +6,6 @@ def removeDotFromColumnNames(df):
 
 def dropMinutes(df):
     df = df[(df['framestime'] > min_time) & (df['framestime'] < max_time)]
-    df.drop(['framestime'], axis=1, inplace=True)
     return df
 
 def sortByDate(df):
@@ -18,9 +17,6 @@ def dropNotDraw(df):
   #drop mathces without draw in betting frame
   df['draw'] = df['frameshomescore'] - df['framesawayscore']
   df = df[df['draw'] == 0]
-  df.drop(['frameshomescore','framesawayscore'], axis=1, inplace=True)
-  #drop 'draw' column
-  df.drop(['draw'], axis=1, inplace=True)
   return df
 
 def oddsFilter(df):
@@ -39,15 +35,15 @@ def addSumStats(df):
 
 
 def dropInsufficient(df):
-  #drop records with insufficient value of summary data
   df = df[(df['sumAstats'] >= insufficient) | (df['sumBstats'] >= insufficient)]
   return df
 
 def dif_threshold(df):
   # Calculate the difference between the values in columns 'sumAstats' and 'sumBstats'
   df['diff'] = abs(df['sumAstats'] - df['sumBstats'])
-  # Delete rows where the difference is less than dif_threshold
   df = df[df['diff'] >= threshold]
-  # Drop the 'diff' column, as it is no longer needed
-  df = df.drop(columns='diff')
   return df
+
+def dropUnnecessary(df):
+    df.drop(['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'sumAstats', 'sumBstats', 'datetimestamp'], axis=1, inplace=True)
+    return df
