@@ -9,7 +9,7 @@ class TestPandasFunctions(unittest.TestCase):
             'framestime': [10, 20, 30, 40],
             'frameshomescore': [1, 1, 2, 2],
             'framesawayscore': [1, 2, 2, 3],
-            'datetimestamp': [1631809781000, 1631809782000, 1631809783000, 1631809784000],
+            'datetimestamp': [1631809781000, 1631809782000, 1631809784000, 1631809783000],
             'frameshomeodd': [1.1, 1.6, 1.7, 2.0],
             'framesawayodd': [1.1, 1.6, 1.7, 2.0],
             'frameshomeshotsOnTarget': [20, 20, 20, 1],
