@@ -39,10 +39,9 @@ pipeline = pipe(
 )
 df = pipeline(df)
 
-#df = df.iloc[:len(df)//1000]      #uncomment for quick test run <-----------------------------------------------
+# df = df.head(1000)      #uncomment for quick test run <-----------------------------------------------
 
 # Normalize data because data do not follow GaussianDistribution - checked in other file.
-# to do: in future apply Central Limit Theorem
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
@@ -54,21 +53,18 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 1
+model_selector = 2
 
 if model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
     from tensorflow.keras.models import load_model
     loaded_model = load_model('nn_model.keras')
-    #loaded_model.fit(X_train, y_train)
     y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)  # because result is probabilities
 elif model_selector == 2:
     xgb_model(X_train, X_test, y_train, y_test)
-    #Load params from xgb training
-    with open("best_params_xgb.json", "r") as f:
-       loaded_params = json.load(f)
-    loaded_model = xgb.XGBClassifier(**loaded_params) # **unpack from json to xgb
-    loaded_model.fit(X_train, y_train)
+    # Initialize an empty XGBoost model
+    loaded_model = xgb.XGBClassifier()
+    loaded_model.load_model("best_xgb_model.model")
     y_pred = loaded_model.predict(X_test)
 
 accuracy = accuracy_score(y_test, y_pred)

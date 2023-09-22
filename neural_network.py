@@ -8,7 +8,7 @@ import wandb
 from config import epochs, patience
 
 def nn_model(X_train, X_test, y_train, y_test):
-    n_features = X_train.shape[1]  # Get the number of features from the training data
+    n_features = X_train.shape[1]
 
     model = Sequential()
     model.add(Dense(n_features, input_dim=n_features, activation='relu'))
