@@ -2,15 +2,10 @@ Soccer Statistics Analysis (1998-2023)
 
 Project Description
 
-This project tries to predict soccer events results. Dataset contains live stats from 1998 to 2023. Different tools used here like Neural Networks and XGBoost, and also run some tests to make sure our data and results are reliable.
+This project attempts to predict the outcome of soccer events. The dataset contains live statistics from 1998 to 2023. Various tools such as neural networks and XGBoost have been used here, and tests have been conducted to make sure our data and results are reliable.
 
-Usage
+The project is still in the development phase. The next steps will be:
 
-To run the main script, execute:
-python main.py
+-adding a custom loss function
 
-Project is still in development. Next steps will be:
-
--add custom loss function
-
--try time series
+-testing the time series
