@@ -4,7 +4,6 @@ from config import n_iter, cv
 import matplotlib.pyplot as plt
 import matplotlib
 import json
-matplotlib.use('TkAgg')
 
 def xgb_model(X_train, X_test, y_train, y_test):
     xgb_model = xgb.XGBClassifier()

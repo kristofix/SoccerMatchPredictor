@@ -21,9 +21,7 @@ wandb.init(
     tags=["xgb","nn"]
 )
 
-start_time = time.time() # to compare running time with and without normalization
-
-matplotlib.use('TkAgg')
+start_time = time.time()
 
 df = pd.read_csv('/home/kk/PycharmProjects/oddmaker/data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
 df.dropna(inplace=True)
