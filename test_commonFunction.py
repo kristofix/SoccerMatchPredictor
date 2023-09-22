@@ -21,8 +21,6 @@ class TestPandasFunctions(unittest.TestCase):
             'framesawayshotsOffTarget': [1, 1, 2, 2],
             'framesawayattacks': [1, 1, 2, 2],
             'framesawaydangerousAttacks': [1, 1, 2, 2]
-            # 'sumAstats': []
-            # 'sumBstats':
         })
 
     def test_removeDotFromColumnNames(self):
