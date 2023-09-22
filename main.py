@@ -6,7 +6,6 @@ import pandas as pd
 from ramda import pipe
 import numpy as np
 import json
-import matplotlib
 import xgboost as xgb
 import time
 import wandb
@@ -17,7 +16,7 @@ from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, d
 
 wandb.init(
     project="09-23 xgb and nn",
-    notes="xgb drop sumstats,frameshomeodd",
+    notes="xgb drop sumstats",
     tags=["xgb","nn"]
 )
 
@@ -98,13 +97,10 @@ plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.show(block=False)
 
-# to do:
-# add result to dict
-# add result to set
-
 end_time = time.time()
 elapsed_time = end_time - start_time
-print(f"Function took {elapsed_time} seconds to run.") #78,43 with normalization and 63 without for small dataset - strange - need to check in future.
+
+print(f"Function took {elapsed_time} seconds to run.")
 
 plt.show()
 
