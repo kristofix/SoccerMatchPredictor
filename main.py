@@ -10,10 +10,10 @@ import matplotlib
 import xgboost as xgb
 import time
 import wandb
-from XGBwithBayesSearch import xgb_model
-from neuralNetwork import nn_model
+from xgb_with_bayes_search import xgb_model
+from neural_network import nn_model
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
-from commonFunction import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
+from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
 
 wandb.init(
     project="09-23 xgb and nn",

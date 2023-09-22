@@ -2,7 +2,7 @@ import pandas as pd
 from ramda import pipe
 import seaborn as sns
 import matplotlib.pyplot as plt
-from commonFunction import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_threshold
+from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_threshold
 
 df = pd.read_csv('../data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
 df.dropna(inplace=True)

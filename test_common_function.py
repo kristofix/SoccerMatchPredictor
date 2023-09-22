@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from commonFunction import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, dropInsufficient, dif_threshold, dropUnnecessary
+from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, dropInsufficient, dif_threshold, dropUnnecessary
 class TestPandasFunctions(unittest.TestCase):
 
     def setUp(self):
