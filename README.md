@@ -6,5 +6,6 @@ This project attempts to predict the outcome of soccer events. The dataset conta
 
 The project is still in the development phase. The next steps will be:
 
--adding a custom loss function
+-custom loss function
+
 -testing the time series
