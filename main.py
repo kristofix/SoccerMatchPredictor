@@ -29,6 +29,8 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
 
+print(df.columns)
+
 # remove outliers
 df = z_score_outlier(df)
 
@@ -39,7 +41,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 1
+model_selector = 2
 
 if model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
