@@ -7,4 +7,4 @@ threshold = 1
 n_iter = 2 # BayesSearch
 cv = 2 # BayesSearch
 epochs = 100 # for neuralnetwork
-patience = 20 # for neuralnetwork
+patience = 50 # for neuralnetwork

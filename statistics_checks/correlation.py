@@ -1,27 +1,9 @@
-import pandas as pd
-from ramda import pipe
 import seaborn as sns
 import matplotlib.pyplot as plt
-from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter, addSumStats, dropInsufficient, dif_threshold
+from data_preparation import data_preparation
 
-df = pd.read_csv('../data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
-df.dropna(inplace=True)
-print(df.shape)
-pipeline = pipe(
-    removeDotFromColumnNames,
-    dropMinutes,
-    sortByDate,
-    dropNotDraw,
-    oddsFilter,
-    addSumStats,
-    dropInsufficient,
-    dif_threshold
-)
-
-df = pipeline(df)
-df.drop(['datetimestamp'], axis=1, inplace=True)
-# df = df.iloc[:len(df)//100]      #uncomment for quick test run
-
+df = data_preparation()
+# df = df.head(1000)      #uncomment for quick test run
 
 correlation_matrix = df.corr()
 print(correlation_matrix)

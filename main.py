@@ -2,17 +2,15 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, r
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
-import pandas as pd
-from ramda import pipe
 import numpy as np
-import json
 import xgboost as xgb
 import time
 import wandb
 from xgb_with_bayes_search import xgb_model
 from neural_network import nn_model
-from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold, n_iter
-from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
+from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
+from common_function import dif_threshold
+from data_preparation import data_preparation
 
 wandb.init(
     project="09-23 xgb and nn",
@@ -22,24 +20,9 @@ wandb.init(
 
 start_time = time.time()
 
-df = pd.read_csv('/home/kk/PycharmProjects/oddmaker/data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
-df.dropna(inplace=True)
-print(df.shape)
+df = data_preparation()
 
-pipeline = pipe(
-    removeDotFromColumnNames,
-    dropMinutes,
-    sortByDate,
-    dropNotDraw,
-    oddsFilter,
-    addSumStats,
-    dropInsufficient,
-    dif_threshold,
-    dropUnnecessary
-)
-df = pipeline(df)
-
-# df = df.head(1000)      #uncomment for quick test run <-----------------------------------------------
+# df = df.head(1000) #uncomment for quick test run <-----------------------------------------------
 
 # Normalize data because data do not follow GaussianDistribution - checked in other file.
 from sklearn.preprocessing import MinMaxScaler
@@ -53,7 +36,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 2
+model_selector = 1
 
 if model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
@@ -83,7 +66,7 @@ yield1 = int((cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1])) 
 total_bets = cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]
 income = cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1]
 
-print('Test income: ', income, '<-----------------------')
+print('Test income: ', income)
 print('Test total placed bet: ', total_bets)
 print('Test yield: ', yield1)
 
