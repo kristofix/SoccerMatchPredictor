@@ -54,13 +54,13 @@ elif model_selector == 2:
     y_pred = loaded_model.predict(X_test)
 
 accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy:", accuracy)
+print("Test set accuracy:", accuracy)
 precision = precision_score(y_test, y_pred, average='weighted')
-print("precision:", precision)
+print("Test set precision:", precision)
 recall = recall_score(y_test, y_pred, average='weighted')
-print("Recall:", recall)
+print("Test set recall:", recall)
 f1 = f1_score(y_test, y_pred, average='weighted')
-print("F1 Score:", f1)
+print("Test set f1 Score:", f1)
 
 cm = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", cm)
