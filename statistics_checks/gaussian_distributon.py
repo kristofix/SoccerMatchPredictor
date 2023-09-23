@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 df = data_preparation()
 
 #Stratified sampling ensures that each class is represented proportionally. Need to use it because shapiro-wilk can't handle big dataset
-
 _, sample_df = train_test_split(df, test_size=0.01, stratify=df['zzz_play'])
 
 #Shapiro-Wilk test

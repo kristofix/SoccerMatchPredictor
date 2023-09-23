@@ -11,6 +11,7 @@ from neural_network import nn_model
 from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
 from common_function import dif_threshold
 from data_preparation import data_preparation
+from statistics_checks.outlier_detection import z_score_outlier
 
 wandb.init(
     project="09-23 xgb and nn",
@@ -24,10 +25,12 @@ df = data_preparation()
 
 # df = df.head(1000) #uncomment for quick test run <-----------------------------------------------
 
-# Normalize data because data do not follow GaussianDistribution - checked in other file.
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+
+# remove outliers
+df = z_score_outlier(df)
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 
