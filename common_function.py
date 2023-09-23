@@ -44,6 +44,6 @@ def dif_threshold(df):
   return df
 
 def dropUnnecessary(df):
-    cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'sumAstats', 'sumBstats', 'datetimestamp']
+    cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'datetimestamp']
     df.drop(columns=[col for col in cols_to_drop if col in df.columns], inplace=True)
     return df
