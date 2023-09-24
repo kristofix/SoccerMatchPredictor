@@ -9,10 +9,13 @@ from data_preparation import data_preparation
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+#Select model
+model_selector = "nn"  #  "lgbm", "xgb" or "nn" [for neural_network]
+
 wandb.init(
     project="09-23 xgb and nn",
-    notes="xgb drop sumstats",
-    tags=["xgb","nn"]
+    notes=model_selector,
+    tags=["xgb","nn","lgbm"]
 )
 
 # Run pipeline with cleaning, sorting and filtering dataset
@@ -21,13 +24,12 @@ df = data_preparation()
 # df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------------
 
 # Normalize data
-scaler = MinMaxScaler()
-df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 
 #Select model
-model_selector = "xgb"  #  "lgbm", "xgb" or "nn" [for neural_network]
+model_selector = "lgbm"  #  "lgbm", "xgb" or "nn" [for neural_network]
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)
 
 # Metrics, confusion matrix and printing results

@@ -34,13 +34,11 @@ def xgb_model(X_train, X_test, y_train, y_test):
         json.dump(opt.best_params_, f)
 
     best_model = opt.best_estimator_
-    # Save the model
     best_model.save_model("best_xgb_model.model")
 
     # Plot feature importance
     xgb.plot_importance(best_model)
     plt.show(block=False)
-
     importances = best_model.feature_importances_
     feature_names = X_train.columns
 
