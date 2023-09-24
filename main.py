@@ -12,6 +12,8 @@ from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
 from common_function import dif_threshold
 from data_preparation import data_preparation
 from statistics_checks.outlier_detection import z_score_outlier
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 wandb.init(
     project="09-23 xgb and nn",
@@ -25,9 +27,8 @@ df = data_preparation()
 
 # df = df.head(1000) #uncomment for quick test run <-----------------------------------------------
 
-from sklearn.preprocessing import MinMaxScaler
-scaler = MinMaxScaler()
-df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+# scaler = MinMaxScaler()
+# df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
 
 print(df.columns)
 
@@ -41,7 +42,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 # XGB - 2
 # Use selector to choose model
 
-model_selector = 2
+model_selector = 1
 
 if model_selector == 1:
     nn_model(X_train, X_test, y_train, y_test)
@@ -106,3 +107,8 @@ wandb.log({
 })
 
 wandb.finish()
+
+# save test with predictions to csv
+combined_df = pd.concat([X_test, y_test], axis=1)
+combined_df['predict'] = y_pred
+combined_df.to_csv('test_and_predictions.csv', index=False)
