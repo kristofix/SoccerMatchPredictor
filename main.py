@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -19,10 +19,10 @@ wandb.init(
 start_time = time.time()
 
 df = data_preparation()
-df = df.head(1000) #uncomment for quick test run <------------------------------------------------------------------------------------------------------
+# df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------------
 
-# scaler = MinMaxScaler()
-# df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+scaler = MinMaxScaler()
+df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 
