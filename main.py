@@ -13,7 +13,7 @@ from sklearn.preprocessing import MinMaxScaler
 model_selector = "nn"  #  "lgbm", "xgb" or "nn" [for neural_network]
 
 wandb.init(
-    project="09-23 xgb and nn",
+    project="version 9.2 9 2023",
     notes=model_selector,
     tags=["xgb","nn","lgbm"]
 )
