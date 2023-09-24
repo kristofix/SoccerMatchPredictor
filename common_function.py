@@ -1,5 +1,11 @@
-import pandas as pd
 from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
+import numpy as np
+import xgboost as xgb
+from xgb_with_bayes_search import xgb_model
+from neural_network import nn_model
+from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
+import pandas as pd
 
 def removeDotFromColumnNames(df):
     df.columns = df.columns.str.replace('.', '', regex=False)
@@ -47,3 +53,28 @@ def dropUnnecessary(df):
     cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'datetimestamp', 'sumAstats', 'sumBstats']
     df.drop(columns=[col for col in cols_to_drop if col in df.columns], inplace=True)
     return df
+
+def calculate_metrics(y_test, y_pred):
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    cm = confusion_matrix(y_test, y_pred)
+    print(f"Test set accuracy: {accuracy}")
+    print(f"Test set precision: {precision}")
+    print(f"Test set recall: {recall}")
+    print(f"Test set F1 Score: {f1}")
+    return accuracy, precision, recall, f1
+
+def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
+    if model_selector == "nn":
+        nn_model(X_train, X_test, y_train, y_test)
+        from tensorflow.keras.models import load_model
+        loaded_model = load_model('nn_model.keras')
+        y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
+    elif model_selector == "xgb":
+        xgb_model(X_train, X_test, y_train, y_test)
+        loaded_model = xgb.XGBClassifier()
+        loaded_model.load_model("best_xgb_model.model")
+        y_pred = loaded_model.predict(X_test)
+    return y_pred

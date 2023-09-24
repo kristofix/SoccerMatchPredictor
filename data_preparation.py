@@ -1,7 +1,7 @@
 import pandas as pd
 from ramda import pipe
 from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
-
+from statistics_checks.outlier_detection import z_score_outlier
 def data_preparation():
 
     df = pd.read_csv('/home/kk/PycharmProjects/oddmaker/data/exp23_withLeagues_LIMITED_minutes_4-35_odd_1.1-5_insfufficient_10_dif_1_onlyDraws.csv')
@@ -16,7 +16,8 @@ def data_preparation():
         addSumStats,
         dropInsufficient,
         dif_threshold,
-        dropUnnecessary
+        dropUnnecessary,
+        z_score_outlier
     )
 
     return pipeline(df)
