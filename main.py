@@ -2,7 +2,6 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
-import time
 import wandb
 from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
 from common_function import dif_threshold, calculate_metrics, select_and_train_model, sport_metrics
@@ -16,9 +15,9 @@ wandb.init(
     tags=["xgb","nn"]
 )
 
-start_time = time.time()
-
+# Run pipeline with cleaning, sorting and filtering dataset
 df = data_preparation()
+
 # df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------------
 
 scaler = MinMaxScaler()
@@ -30,6 +29,7 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1),
 model_selector = "nn"  #  "xgb" or "nn" [for neural_network]
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)
 
+# Metrics, confusion matrix and printing results
 accuracy, precision, recall, f1 = calculate_metrics(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", cm)
@@ -40,11 +40,6 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
 plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.show(block=False)
-
-end_time = time.time()
-elapsed_time = end_time - start_time
-print(f"Function took {elapsed_time} seconds to run.")
-
 plt.show()
 
 wandb.log({
