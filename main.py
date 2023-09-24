@@ -66,7 +66,7 @@ wandb.log({
 
 wandb.finish()
 
-# save test with predictions to csv
+# save X_test and y_test with predictions to csv
 combined_df = pd.concat([X_test, y_test], axis=1)
 combined_df['predict'] = y_pred
 combined_df.to_csv('test_and_predictions.csv', index=False)
