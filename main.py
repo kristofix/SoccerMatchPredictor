@@ -27,9 +27,6 @@ df = data_preparation()
 df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
-
-#Select model
-model_selector = "lgbm"  #  "lgbm", "xgb" or "nn" [for neural_network]
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)
 
 # Metrics, confusion matrix and printing results
