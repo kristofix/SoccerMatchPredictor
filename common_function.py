@@ -2,8 +2,10 @@ from config import max_time, threshold
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
 import numpy as np
 import xgboost as xgb
+import lightgbm as lgb
 from models.xgb_with_bayes_search import xgb_model
 from models.neural_network import nn_model
+from models.lgbm import lgbm_model
 from config import min_time, minbetodd, maxbetodd, insufficient
 import pandas as pd
 
@@ -82,9 +84,18 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         from tensorflow.keras.models import load_model
         loaded_model = load_model('nn_model.keras')
         y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
+        print(y_pred)
     elif model_selector == "xgb":
         xgb_model(X_train, X_test, y_train, y_test)
         loaded_model = xgb.XGBClassifier()
         loaded_model.load_model("best_xgb_model.model")
         y_pred = loaded_model.predict(X_test)
+        print(y_pred)
+    elif model_selector == "lgbm":
+        lgbm_model(X_train, X_test, y_train, y_test)  # Assuming this function trains and saves the model
+        booster = lgb.Booster(model_file='best_lgbm_model.txt')  # Load the trained booster
+        y_pred = booster.predict(X_test)  # Use the booster to make predictions directly
+        print(y_pred)
+        y_pred = np.argmax(y_pred, axis=1)
+        print(y_pred)
     return y_pred
