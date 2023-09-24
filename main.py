@@ -5,7 +5,7 @@ import seaborn as sns
 import time
 import wandb
 from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
-from common_function import dif_threshold, calculate_metrics, select_and_train_model
+from common_function import dif_threshold, calculate_metrics, select_and_train_model, sport_metrics
 from data_preparation import data_preparation
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
@@ -27,20 +27,13 @@ df = df.head(1000) #uncomment for quick test run <------------------------------
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 
 #Select model
-model_selector = "xgb"  # "nn" or "xgb"
+model_selector = "nn"  # "nn" or "xgb"
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)
 
 accuracy, precision, recall, f1 = calculate_metrics(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", cm)
-
-yield1 = int((cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1])) / int((cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]))
-total_bets = cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]
-income = cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1]
-
-print('Test income: ', income)
-print('Test total placed bet: ', total_bets)
-print('Test yield: ', yield1)
+yield1, total_bets, income = sport_metrics(cm)
 
 fig, ax = plt.subplots()
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
@@ -50,7 +43,6 @@ plt.show(block=False)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
-
 print(f"Function took {elapsed_time} seconds to run.")
 
 plt.show()

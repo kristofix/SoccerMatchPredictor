@@ -66,6 +66,16 @@ def calculate_metrics(y_test, y_pred):
     print(f"Test set F1 Score: {f1}")
     return accuracy, precision, recall, f1
 
+def sport_metrics(cm):
+    yield1 = int((cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1])) / int(
+        (cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]))
+    total_bets = cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]
+    income = cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1]
+    print('Test income: ', income)
+    print('Test total placed bet: ', total_bets)
+    print('Test yield: ', yield1)
+    return yield1, total_bets, income
+
 def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
     if model_selector == "nn":
         nn_model(X_train, X_test, y_train, y_test)
