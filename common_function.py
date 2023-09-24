@@ -1,10 +1,10 @@
-from config import min_time, max_time, minbetodd, maxbetodd, insufficient, threshold
+from config import max_time, threshold
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
 import numpy as np
 import xgboost as xgb
-from xgb_with_bayes_search import xgb_model
-from neural_network import nn_model
-from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
+from models.xgb_with_bayes_search import xgb_model
+from models.neural_network import nn_model
+from config import min_time, minbetodd, maxbetodd, insufficient
 import pandas as pd
 
 def removeDotFromColumnNames(df):

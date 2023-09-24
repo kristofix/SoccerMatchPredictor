@@ -30,7 +30,7 @@ def xgb_model(X_train, X_test, y_train, y_test):
 
     opt.fit(X_train, y_train)
 
-    with open("best_params_xgb.json", "w") as f:
+    with open("../best_params_xgb.json", "w") as f:
         json.dump(opt.best_params_, f)
 
     best_model = opt.best_estimator_
