@@ -1,7 +1,7 @@
-min_time = 19
-max_time = 21
+min_time = 8
+max_time = 10
 minbetodd = 1.9
-maxbetodd = 2.9
+maxbetodd = 5
 insufficient = 20
 threshold = 1
 n_iter = 10 # BayesSearch

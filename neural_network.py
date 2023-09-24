@@ -12,12 +12,18 @@ def nn_model(X_train, X_test, y_train, y_test):
 
     model = Sequential()
     model.add(Dense(n_features, input_dim=n_features, activation='relu'))
+    model.add(Dense(60, activation='relu'))
+    model.add(Dense(30, activation='relu'))
+    model.add(Dense(25, activation='relu'))
+    model.add(Dense(20, activation='relu'))
     model.add(Dense(15, activation='relu'))
-    model.add(Dense(8, activation='relu'))
+    model.add(Dense(6, activation='relu'))
     model.add(Dense(3, activation='softmax'))
 
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='SGD', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=patience, verbose=1, mode='min')
+
+
     history = model.fit(X_train, y_train, epochs=epochs, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
 
     model.save('nn_model.keras')
