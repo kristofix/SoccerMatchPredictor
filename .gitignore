@@ -3,7 +3,4 @@ data/*
 venv/*
 wandb/*
 venv
-catboost_info/*
-*.csv
-
-
+/catboost_info/
