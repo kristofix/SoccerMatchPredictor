@@ -21,7 +21,7 @@ wandb.init(
 # Run pipeline with cleaning, sorting and filtering dataset
 df = data_preparation()
 
-# df = df.head(100) #uncomment for quick test run <--------------------------------------------------------------------------------------------------
+# df = df.head(100) #uncomment for quick test run <-------------------------------------------------------------------------------------------------
 
 # Normalize data
 df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])

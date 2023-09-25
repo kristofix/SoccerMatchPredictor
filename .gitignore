@@ -1,6 +1,6 @@
-# created by virtualenv automatically
 data/*
 venv/*
 wandb/*
 venv
+catboost_info
 catboost_info/*
