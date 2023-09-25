@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 #Select model
-model_selector = "nn"  #  "lgbm", "xgb" or "nn" [for neural_network]
+model_selector = "nn"  #  "lgbm", "xgb" or "nn" [nn - neural_network]
 
 wandb.init(
     project="version 9.2 9 2023",
@@ -42,6 +42,7 @@ plt.ylabel('True')
 plt.show(block=False)
 plt.show()
 
+# Log results to wandb
 wandb.log({
     'Total bets placed': total_bets,
     'income': income,
