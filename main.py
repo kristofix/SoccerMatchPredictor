@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 #Select model
-model_selector = "nn"  #  "lgbm", "xgb" or "nn" [nn - neural_network]
+model_selector = "catboost"  #  "catboost", "lgbm", "xgb" or "nn" [nn - neural_network]
 
 wandb.init(
     project="version 9.2 9 2023",

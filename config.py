@@ -5,8 +5,8 @@ epochs = 200 # for neuralnetwork
 patience = 120 # for neuralnetwork
 
 # filter soccer dataset
-min_time = 8
-max_time = 10
+min_time = 14
+max_time = 16
 minbetodd = 1.9
 maxbetodd = 5
 insufficient = 20 # minimum amount of information from each sports meeting

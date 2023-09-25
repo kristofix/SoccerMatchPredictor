@@ -11,3 +11,4 @@ pandas_profiling
 seaborn
 xgboost
 scikit-optimize
+catboost

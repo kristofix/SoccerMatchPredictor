@@ -6,8 +6,10 @@ import lightgbm as lgb
 from models.xgb_with_bayes_search import xgb_model
 from models.neural_network import nn_model
 from models.lgbm import lgbm_model
+from models.catboost import catboost_model
 from config import min_time, minbetodd, maxbetodd, insufficient
 import pandas as pd
+from catboost import CatBoostClassifier
 
 def removeDotFromColumnNames(df):
     df.columns = df.columns.str.replace('.', '', regex=False)
@@ -92,10 +94,15 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         y_pred = loaded_model.predict(X_test)
         print(y_pred)
     elif model_selector == "lgbm":
-        lgbm_model(X_train, X_test, y_train, y_test)  # Assuming this function trains and saves the model
-        booster = lgb.Booster(model_file='best_lgbm_model.txt')  # Load the trained booster
-        y_pred = booster.predict(X_test)  # Use the booster to make predictions directly
+        lgbm_model(X_train, X_test, y_train, y_test)
+        booster = lgb.Booster(model_file='best_lgbm_model.txt')
+        y_pred = booster.predict(X_test)
         print(y_pred)
         y_pred = np.argmax(y_pred, axis=1)
+    elif model_selector == "catboost":
+        catboost_model(X_train, X_test, y_train, y_test)
+        loaded_model = CatBoostClassifier()
+        loaded_model.load_model("best_catboost_model.cbm")
+        y_pred = loaded_model.predict(X_test)
         print(y_pred)
     return y_pred

@@ -1,5 +1,5 @@
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 import matplotlib.pyplot as plt
 #from tensorflow.keras import regularizers
@@ -12,9 +12,6 @@ def nn_model(X_train, X_test, y_train, y_test):
 
     model = Sequential()
     model.add(Dense(n_features, input_dim=n_features, activation='relu'))
-    model.add(Dense(60, activation='relu'))
-    model.add(Dense(30, activation='relu'))
-    model.add(Dense(25, activation='relu'))
     model.add(Dense(20, activation='relu'))
     model.add(Dense(15, activation='relu'))
     model.add(Dense(6, activation='relu'))
@@ -22,7 +19,6 @@ def nn_model(X_train, X_test, y_train, y_test):
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=patience, verbose=1, mode='min')
-
 
     history = model.fit(X_train, y_train, epochs=epochs, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])
 
@@ -47,6 +43,7 @@ def nn_model(X_train, X_test, y_train, y_test):
     axs[1].legend(['Train', 'Validation'], loc='upper left')
 
     plt.show(block=False)
+
     wandb.log({"Training Metrics": [wandb.Image(fig)]})
 
 
