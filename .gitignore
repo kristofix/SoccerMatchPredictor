@@ -1,6 +1,6 @@
 data/*
 venv/*
 wandb/*
-venv
-catboost_info
+venv/*
 catboost_info/*
+

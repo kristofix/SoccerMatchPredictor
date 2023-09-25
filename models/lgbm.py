@@ -1,7 +1,7 @@
 from skopt import BayesSearchCV
 import lightgbm as lgb
 import matplotlib.pyplot as plt
-from sklearn.model_selection import StratifiedKFold
+from config import n_iter, cv
 
 def lgbm_model(X_train, X_test, y_train, y_test):
 
@@ -22,8 +22,8 @@ def lgbm_model(X_train, X_test, y_train, y_test):
     bayes_search = BayesSearchCV(
         estimator=lgbm_model,
         search_spaces=search_space,
-        n_iter=50,
-        cv=StratifiedKFold(n_splits=3),
+        n_iter=n_iter,
+        cv=cv,
         n_jobs=-1,
         verbose=1
     )
