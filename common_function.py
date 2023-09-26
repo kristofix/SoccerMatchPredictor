@@ -86,23 +86,19 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         from tensorflow.keras.models import load_model
         loaded_model = load_model('nn_model.keras')
         y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
-        print(y_pred)
     elif model_selector == "xgb":
         xgb_model(X_train, X_test, y_train, y_test)
         loaded_model = xgb.XGBClassifier()
         loaded_model.load_model("best_xgb_model.model")
         y_pred = loaded_model.predict(X_test)
-        print(y_pred)
     elif model_selector == "lgbm":
         lgbm_model(X_train, X_test, y_train, y_test)
         booster = lgb.Booster(model_file='best_lgbm_model.txt')
         y_pred = booster.predict(X_test)
-        print(y_pred)
-        y_pred = np.argmax(y_pred, axis=1)
+        y_pred = np.argmax(y_pred, axis=1) # because lgbm return probabilities for each class
     elif model_selector == "catboost":
         catboost_model(X_train, X_test, y_train, y_test)
         loaded_model = CatBoostClassifier()
         loaded_model.load_model("best_catboost_model.cbm")
         y_pred = loaded_model.predict(X_test)
-        print(y_pred)
     return y_pred
