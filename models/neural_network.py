@@ -6,6 +6,12 @@ import matplotlib.pyplot as plt
 from wandb.keras import WandbCallback
 import wandb
 from config import epochs, patience
+import tensorflow as tf
+import numpy as np
+
+# I'm using typical loss function, but below I'm preparing place for custom loss already
+def custom_loss(y_true, y_pred):
+    return tf.keras.metrics.sparse_categorical_crossentropy(y_true, y_pred, from_logits=False, axis=-1, ignore_class=None)
 
 def nn_model(X_train, X_test, y_train, y_test):
     n_features = X_train.shape[1]
@@ -17,7 +23,8 @@ def nn_model(X_train, X_test, y_train, y_test):
     model.add(Dense(6, activation='relu'))
     model.add(Dense(3, activation='softmax'))
 
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss=custom_loss, optimizer='adam', metrics=['accuracy'])
+
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=patience, verbose=1, mode='min')
 
     history = model.fit(X_train, y_train, epochs=epochs, batch_size=32, validation_split=0.2, callbacks=[early_stop, WandbCallback()])

@@ -24,7 +24,7 @@ df = data_preparation()
 # df = df.head(100) #uncomment for quick test run <-------------------------------------------------------------------------------------------------
 
 # Normalize data
-df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
+# df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
 # Standardize data
 # df.iloc[:, :-1] = StandardScaler().fit_transform(df.iloc[:, :-1])
 
