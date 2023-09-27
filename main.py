@@ -20,7 +20,7 @@ wandb.init(
 # Run pipeline with normalize, cleaning, sorting and filtering dataset
 df = data_preparation()
 
-df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------
+# df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)
