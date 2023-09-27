@@ -7,7 +7,6 @@ from config import min_time, minbetodd, maxbetodd, insufficient, n_iter
 from common_function import dif_threshold, calculate_metrics, select_and_train_model, sport_metrics
 from data_preparation import data_preparation
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 #Select model
 model_selector = "nn"  #  "catboost", "lgbm", "xgb" or "nn" [nn - neural_network]
@@ -18,16 +17,10 @@ wandb.init(
     tags=["xgb","nn","lgbm"]
 )
 
-# Run pipeline with cleaning, sorting and filtering dataset
+# Run pipeline with normalize, cleaning, sorting and filtering dataset
 df = data_preparation()
 
-# df = df.head(100) #uncomment for quick test run <-------------------------------------------------------------------------------------------------
-
-# Normalize data
-# df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
-# Standardize data
-# df.iloc[:, :-1] = StandardScaler().fit_transform(df.iloc[:, :-1])
-
+df = df.head(100) #uncomment for quick test run <------------------------------------------------------------------------------------------------
 
 X_train, X_test, y_train, y_test = train_test_split(df.drop('zzz_play', axis=1), df['zzz_play'], test_size=0.2,random_state=42)
 y_pred = select_and_train_model(model_selector, X_train, X_test, y_train, y_test)

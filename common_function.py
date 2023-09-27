@@ -11,6 +11,7 @@ from config import min_time, minbetodd, maxbetodd, insufficient
 import pandas as pd
 from catboost import CatBoostClassifier
 import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 def removeDotFromColumnNames(df):
     df.columns = df.columns.str.replace('.', '', regex=False)
@@ -57,6 +58,14 @@ def dif_threshold(df):
 def dropUnnecessary(df):
     cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'datetimestamp', 'sumAstats', 'sumBstats']
     df.drop(columns=[col for col in cols_to_drop if col in df.columns], inplace=True)
+    return df
+
+def normalize_data(df):
+    df.iloc[:, :-1] = MinMaxScaler().fit_transform(df.iloc[:, :-1])
+    return df
+
+def standarize_data(df):
+    df.iloc[:, :-1] = StandardScaler().fit_transform(df.iloc[:, :-1])
     return df
 
 def calculate_metrics(y_test, y_pred):

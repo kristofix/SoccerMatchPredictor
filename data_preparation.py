@@ -1,6 +1,6 @@
 import pandas as pd
 from ramda import pipe
-from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary
+from common_function import removeDotFromColumnNames, dropMinutes, sortByDate, dropNotDraw, oddsFilter,addSumStats, dif_threshold, dropInsufficient, dropUnnecessary, normalize_data, standarize_data
 from EDA_and_statistics_checks.outlier_detection import z_score_outlier
 def data_preparation():
 
@@ -17,7 +17,8 @@ def data_preparation():
         dropInsufficient,
         dif_threshold,
         dropUnnecessary,
-        z_score_outlier
+        z_score_outlier,
+        normalize_data #or standarize_data
     )
 
     return pipeline(df)
