@@ -56,7 +56,7 @@ def dif_threshold(df):
   return df
 
 def dropUnnecessary(df):
-    cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'datetimestamp', 'sumAstats', 'sumBstats']
+    cols_to_drop = ['framestime', 'frameshomescore', 'framesawayscore', 'draw', 'diff', 'datetimestamp']#, 'sumAstats', 'sumBstats']
     df.drop(columns=[col for col in cols_to_drop if col in df.columns], inplace=True)
     return df
 
@@ -100,7 +100,7 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         # loaded_model = load_model('nn_model.keras')
         y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
     elif model_selector == "xgb":
-        models.neural_network.nn_model(X_train, X_test, y_train, y_test)
+        models.xgb_with_bayes_search.xgb_model(X_train, X_test, y_train, y_test)
         loaded_model = xgb.XGBClassifier()
         loaded_model.load_model("best_xgb_model.model")
         y_pred = loaded_model.predict(X_test)
