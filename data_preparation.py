@@ -18,7 +18,8 @@ def data_preparation():
         dif_threshold,
         dropUnnecessary,
         z_score_outlier,
-        normalize_data #or standarize_data
+        # normalize_data,
+        # standarize_data
     )
 
     return pipeline(df)
