@@ -82,7 +82,7 @@ def calculate_metrics(y_test, y_pred):
 
 def sport_metrics(cm):
     yield1 = int((cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1])) / int(
-        (cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]))
+        (cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]) + 0.01) # 0.01 - division by zero solution
     total_bets = cm[1][1] + cm[2][2] + cm[0][1] + cm[0][2] + cm[1][2] + cm[2][1]
     income = cm[1][1] + cm[2][2] - cm[0][1] - cm[0][2] - cm[1][2] - cm[2][1]
     print('Test income: ', income)
@@ -110,7 +110,7 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         y_pred = booster.predict(X_test)
         y_pred = np.argmax(y_pred, axis=1) # because lgbm return probabilities for each class
     elif model_selector == "catboost":
-        models.catboost.catboost_model(X_train, X_test, y_train, y_test)
+        models.model_catboost.catboost_model(X_train, X_test, y_train, y_test)
         loaded_model = CatBoostClassifier()
         loaded_model.load_model("best_catboost_model.cbm")
         y_pred = loaded_model.predict(X_test)

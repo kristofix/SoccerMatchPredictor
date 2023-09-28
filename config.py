@@ -1,5 +1,5 @@
 # Models settings
-n_iter = 10 # BayesSearch for lgbm,xgb and catboost
+n_iter = 2 # BayesSearch for lgbm,xgb and catboost
 cv = 5 # BayesSearch for lgbm,xgb and catboost
 epochs = 200 # for neuralnetwork
 patience = 20 # for neuralnetwork
