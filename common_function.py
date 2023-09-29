@@ -3,15 +3,14 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, r
 import numpy as np
 import xgboost as xgb
 import lightgbm as lgb
-import models.neural_network
-import models.model_catboost
-import models.xgb_with_bayes_search
-import models.lgbm
+# from models.neural_network_custom_loss import custom_loss_func
 from config import min_time, minbetodd, maxbetodd, insufficient
 import pandas as pd
 from catboost import CatBoostClassifier
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from tensorflow.keras.models import load_model # ?????????????????????????
+from models.neural_network import custom_loss
 
 def removeDotFromColumnNames(df):
     df.columns = df.columns.str.replace('.', '', regex=False)
@@ -92,26 +91,34 @@ def sport_metrics(cm):
 
 def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
     if model_selector == "nn":
-        models.neural_network.nn_model(X_train, X_test, y_train, y_test)
-        from tensorflow.keras.models import load_model
-        from models.neural_network import custom_loss
+        from models.neural_network import nn_model
+        nn_model(X_train, X_test, y_train, y_test)
         # custom_objects argument below is used to specify custom loss functions that was used when the model was created
         loaded_model = tf.keras.models.load_model('nn_model.keras', custom_objects={'custom_loss': custom_loss})
-        # loaded_model = load_model('nn_model.keras')
         y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
     elif model_selector == "xgb":
-        models.xgb_with_bayes_search.xgb_model(X_train, X_test, y_train, y_test)
+        from models.xgb_with_bayes_search import xgb_model
+        xgb_model(X_train, X_test, y_train, y_test)
         loaded_model = xgb.XGBClassifier()
         loaded_model.load_model("best_xgb_model.model")
         y_pred = loaded_model.predict(X_test)
     elif model_selector == "lgbm":
-        models.lgbm.lgbm_model(X_train, X_test, y_train, y_test)
+        from models.lgbm import lgbm_model
+        lgbm_model(X_train, X_test, y_train, y_test)
         booster = lgb.Booster(model_file='best_lgbm_model.txt')
         y_pred = booster.predict(X_test)
         y_pred = np.argmax(y_pred, axis=1) # because lgbm return probabilities for each class
     elif model_selector == "catboost":
-        models.model_catboost.catboost_model(X_train, X_test, y_train, y_test)
+        from models.model_catboost import catboost_model
+        catboost_model(X_train, X_test, y_train, y_test)
         loaded_model = CatBoostClassifier()
         loaded_model.load_model("best_catboost_model.cbm")
         y_pred = loaded_model.predict(X_test)
+    elif model_selector == "nn_custom_loss":
+        from models.neural_network_custom_loss import nn_custom_loss_model
+        nn_custom_loss_model(X_train, X_test, y_train, y_test)
+        # custom_objects argument below is used to specify custom loss functions that was used when the model was created
+        loaded_model = tf.keras.models.load_model('nn_model.keras', custom_objects={'custom_loss_func': models.neural_network_custom_loss.custom_loss_func})
+        y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
+
     return y_pred

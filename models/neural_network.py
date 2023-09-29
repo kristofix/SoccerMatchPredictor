@@ -9,7 +9,7 @@ from config import epochs, patience
 import tensorflow as tf
 import numpy as np
 
-# I'm using typical loss function, but below I'm preparing place for custom loss already
+# I'm using sparse_categorical_crossentropy loss function, but below I'm preparing place for custom loss already
 def custom_loss(y_true, y_pred):
     return tf.keras.metrics.sparse_categorical_crossentropy(y_true, y_pred, from_logits=False, axis=-1, ignore_class=None)
 
