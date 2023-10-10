@@ -9,7 +9,7 @@ import pandas as pd
 from catboost import CatBoostClassifier
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from tensorflow.keras.models import load_model # ?????????????????????????
+from tensorflow.keras.models import load_model
 from models.neural_network import custom_loss
 
 def removeDotFromColumnNames(df):
@@ -118,7 +118,7 @@ def select_and_train_model(model_selector, X_train, X_test, y_train, y_test):
         from models.neural_network_custom_loss import nn_custom_loss_model
         nn_custom_loss_model(X_train, X_test, y_train, y_test)
         # custom_objects argument below is used to specify custom loss functions that was used when the model was created
-        loaded_model = tf.keras.models.load_model('nn_model.keras', custom_objects={'custom_loss_func': models.neural_network_custom_loss.custom_loss_func})
+        loaded_model = tf.keras.models.load_model('nn_model.keras', custom_objects={'custom_loss': custom_loss})
         y_pred = np.argmax(loaded_model.predict(X_test), axis=-1)
 
     return y_pred
