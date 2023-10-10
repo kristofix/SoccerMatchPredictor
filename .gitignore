@@ -1,6 +1,17 @@
+# Data directory
 data/*
+
+# Python virtual environment
 venv/*
+
+# Weights and Biases directory
 wandb/*
-venv/*
+
+# CatBoost info directory
 catboost_info/*
 
+# Model files and related JSON
+best_lgbm_model.txt
+best_params_xgb.json
+best_xgb_model.model
+best_catboost_model.cbm

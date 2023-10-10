@@ -1,7 +1,7 @@
 # Models settings
 n_iter = 2 # BayesSearch for lgbm,xgb and catboost
 cv = 5 # BayesSearch for lgbm,xgb and catboost
-epochs = 200 # for neuralnetwork
+epochs = 10 # for neuralnetwork
 patience = 20 # for neuralnetwork
 
 # filter soccer dataset
