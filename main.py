@@ -10,7 +10,7 @@ import pandas as pd
 from analyze_predictions.plot_income_with_odd import plot_income_flow
 
 #Select model
-model_selector = "nn_custom_loss"  #  "catboost", "lgbm", "xgb", "nn" or "nn_custom_loss" [nn - neural_network]
+model_selector = "nn"  #  "catboost", "lgbm", "xgb", "nn" or "nn_custom_loss" [nn - neural_network]
 
 wandb.init(
     project="version 9.2 9 2023",
